@@ -47,10 +47,7 @@ public class DiskMonitorConfig {
 
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/assets/**").addResourceLocations(
-				"classpath:/assets/");
-		registry.addResourceHandler("/css/**").addResourceLocations("/css/");
-		registry.addResourceHandler("/img/**").addResourceLocations("/img/");
-		registry.addResourceHandler("/js/**").addResourceLocations("/js/");
+				"classpath:/assets/").addResourceLocations("/css/**").addResourceLocations("/css/").addResourceLocations("/img/**").addResourceLocations("/img/").addResourceLocations("/js/**").addResourceLocations("/js/");
 	}
 
 }

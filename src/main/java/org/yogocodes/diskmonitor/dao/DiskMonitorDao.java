@@ -1,10 +1,14 @@
 package org.yogocodes.diskmonitor.dao;
 
+import static org.yogocodes.diskmonitor.Constants.DAY_FORMAT;
+import static org.yogocodes.diskmonitor.Constants.HOUR_FORMAT;
+import static org.yogocodes.diskmonitor.Constants.MONTH_FORMAT;
+import static org.yogocodes.diskmonitor.Constants.YEAR_FORMAT;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -13,18 +17,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.yogocodes.diskmonitor.service.MonitorEvent;
 
 @Repository("diskMonitorDao")
 public class DiskMonitorDao {
-	private static final String YEAR_FORMAT = "YYYY";
 
-	private static final String MONTH_FORMAT = "YYYY-MM";
-
-	private static final String DAY_FORMAT = "YYYY-MM-d";
 
 	private final Logger logger = LoggerFactory.getLogger(DiskMonitorDao.class);
 
@@ -89,7 +88,7 @@ public class DiskMonitorDao {
 		SimpleDateFormat dayFormatPattern = new SimpleDateFormat(DAY_FORMAT);
 		String dayFormat = dayFormatPattern.format(monitorEntity.getCreated());
 		SimpleDateFormat hourFormatPattern = new SimpleDateFormat(
-				"YYYY-MM-d-HH");
+				HOUR_FORMAT);
 		String hourFormat = hourFormatPattern
 				.format(monitorEntity.getCreated());
 
@@ -111,16 +110,7 @@ public class DiskMonitorDao {
 		return rows;
 	}
 
-	public List<MonitorStatistics> getHourlyStatistics(Date date, int pageNum, int pageSize) {
 
-		String sql = "select creation_hour as field,min(response_time) as min,avg(response_time) as average,  max(response_time) as max, count(id) as count from monitor_results "
-				+ "where creation_date = ? group by creation_hour order by creation_hour desc limit ?,?";
-		SimpleDateFormat sdf = new SimpleDateFormat(DAY_FORMAT);
-		String creationDate = sdf.format(date);
-		Object args[] = {creationDate, pageNum*pageSize, pageSize};  
-		
-		return queryStatistics(sql, args);
-	}
 
 	private List<MonitorStatistics> queryStatistics(String sql, Object[] args) {
 		return (List<MonitorStatistics>) query(sql, createStatisticRowMapper(), args);
@@ -160,7 +150,7 @@ public class DiskMonitorDao {
 		return statisticRowMapper;
 	}
 
-	public List<MonitorStatistics> getDailyStatistics(Date date, int pageNum, int pageSize) {
+	public List<MonitorStatistics> getMonthlyStatistics(Date date, int pageNum, int pageSize) {
 
 		String sql = "select creation_month as field,min(response_time) as min,avg(response_time) as average,  max(response_time) as max, count(id) as count from monitor_results "
 				+ "where creation_month = ? group by creation_month order by creation_month desc limit ?,?";
@@ -169,5 +159,27 @@ public class DiskMonitorDao {
 		Object args[] = {creationDate, pageNum*pageSize, pageSize};  
 		return queryStatistics(sql, args);
 	}
+
+	public List<MonitorStatistics> getDailyStatistics(Date date, int pageNum, int pageSize) {
+
+		String sql = "select creation_hour as field,min(response_time) as min,avg(response_time) as average,  max(response_time) as max, count(id) as count from monitor_results "
+				+ "where creation_date = ? group by creation_hour order by creation_date desc limit ?,?";
+		SimpleDateFormat sdf = new SimpleDateFormat(DAY_FORMAT);
+		String creationDate = sdf.format(date);
+		Object args[] = {creationDate, pageNum*pageSize, pageSize};  
+		
+		return queryStatistics(sql, args);
+	}
+	
+	public List<MonitorStatistics> getHourlyStatistics(Date date, int pageNum, int pageSize) {
+
+		String sql = "select creation_hour  as field,min(response_time) as min,avg(response_time) as average,  max(response_time) as max, count(id) as count from monitor_results "
+				+ "where creation_hour = ? group by creation_hour  order by creation_hour desc limit ?,?";
+		SimpleDateFormat sdf = new SimpleDateFormat(HOUR_FORMAT);
+		String creationDate = sdf.format(date);
+		Object args[] = {creationDate, pageNum*pageSize, pageSize};  
+		return queryStatistics(sql, args);
+	}
+
 
 }

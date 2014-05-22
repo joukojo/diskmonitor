@@ -7,16 +7,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet"
-	href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href='<c:url value="/css/bootstrap.min.css" />'>
 
 <!-- Optional theme -->
 <link rel="stylesheet"
-	href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
-
+	href='<c:url value="/css/bootstrap-theme.min.css" />'>
+<link rel="stylesheet" href='<c:url value="/css/style.css" />'>
 
 </head>
 <body>
+
+	<jsp:include page="navigation.jsp" />
+
+
 
 	<div class="container">
 
@@ -31,11 +34,15 @@
 				<th>Average</th>
 				<th>Maximum</th>
 			</tr>
-			
+
 			<c:forEach items="${statistics}" var="statistic">
 
+				<c:url value="/${detailed}statistics.htm" var="detailPageUrl">
+					<c:param name="date" value="${statistic.field }" />
+				</c:url>
+
 				<tr>
-					<td><c:out value="${statistic.field}" /></td>
+					<td><a href="${detailPageUrl}" ><c:out value="${statistic.field}" /></a></td>
 					<td><c:out value="${statistic.count }" /></td>
 					<td><c:out value="${statistic.mininum}" /></td>
 					<td><c:out value="${statistic.average}" /></td>
@@ -46,6 +53,8 @@
 
 
 	</div>
+
+	<script src='<c:url value="/js/bootstrap.min.js" />'></script>
 
 </body>
 </html>

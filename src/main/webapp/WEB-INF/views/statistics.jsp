@@ -7,40 +7,41 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet"
-	href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href='<c:url value="/css/bootstrap.min.css" />' />
 
 <!-- Optional theme -->
 <link rel="stylesheet"
-	href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
-
+	href='<c:url value="/css/bootstrap-theme.min.css" />' />
+<link rel="stylesheet" href='<c:url value="/css/style.css" />'>
 
 </head>
 <body>
+	<jsp:include page="navigation.jsp" />
 
-	<div class="container">
-	<h1>Statistics</h1>
 
-	<p class="lead">Viewing date ${param.date}</p>
+	<div class="container-fluid">
+		<h1>Statistics</h1>
 
-	<table class="table">	
-		<tr>
-			<th>Executed</th>
-			<th>Execution time</th>
-		</tr>
-		<c:forEach items="${events}" var="event">
+		<p class="lead">Viewing date ${param.date}</p>
 
+		<table class="table">
 			<tr>
-				<td><c:out value="${event.formattedCreated}" /></td>
-				<td><c:out value="${event.executionTime}" /> msecs</td>
+				<th>Executed</th>
+				<th>Execution time</th>
 			</tr>
-		</c:forEach>
+			<c:forEach items="${events}" var="event">
 
-	</table>
+				<tr>
+					<td><c:out value="${event.formattedCreated}" /></td>
+					<td><c:out value="${event.executionTime}" /> msecs</td>
+				</tr>
+			</c:forEach>
+
+		</table>
 	</div>
-	<!-- Latest compiled and minified JavaScript -->
+	
 	<script
-		src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		src='<c:url value="/js/bootstrap.min.js" />'></script>
 
 </body>
 </html>

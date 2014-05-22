@@ -135,9 +135,11 @@ public class DiskMonitorService {
 		return diskMonitorDao.getHourlyStatistics(date, pageNum, pageSize);
 	}
 	
-	public List<MonitorStatistics> getDailyStatistics(Date date, int pageNum, int pageSize) {
-		return diskMonitorDao.getDailyStatistics(date, pageNum, pageSize);
+	public List<MonitorStatistics> getMonthlyReport(Date date, int pageNum, int pageSize) {
+		return diskMonitorDao.getMonthlyStatistics(date, pageNum, pageSize);
 	}
 	
-
+	public List<MonitorStatistics> getDailyReport(Date date, int pageNum, int pageSize) {
+		return diskMonitorDao.getDailyStatistics(date, pageNum, pageSize);
+	}
 }
